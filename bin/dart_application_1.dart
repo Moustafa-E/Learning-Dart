@@ -73,7 +73,7 @@ void main(List<String> arguments) async {
     2: "two"
   };
 
-  var second = numberMap[2]; // prints "two". 
+  var second = numberMap[2]; // prints "two".
   // ^ Should be nullable incase we access non-existant key to assign a new entry:
   numberMap[3] = "three"; // >> {1: one, 2: two, 3: three}
   numberMap.containsKey(3); // >> true
