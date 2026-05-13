@@ -1,68 +1,47 @@
-import 'package:dart_application_1/dart_application_1.dart' as dart_1;
+import 'package:dart_application_1/default.dart' as default_lib;
+import 'package:dart_application_1/const_final_nullable.dart' as const_final_nullable;
+import 'package:dart_application_1/function_types.dart' as function_types;
+import 'package:dart_application_1/lists_and_sets.dart' as lists_and_sets;
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 void main(List<String> arguments) async {
-  // print('Hello world: ${dart_1.calculate()}!');
+  //////////////////////////////////////////////////
+  print('Hello world: ${default_lib.calculate()}!');
 
-  /////////////////////////////////
-  // const vs. final & nullable //
+  //////////////////////////////////////////////////////
+  print("\n/// Constants, Finals (???) & Nullables///");
+  const_final_nullable.demo();
+
+  /////////////////////////////////////
+  print("\n/// functions & types ///");
+  function_types.sayGreeting();
+
   ////////////////////////////////
-  
-  final String name = dart_1.name(); // final unchangeable at run time. Use when you don't know what it is.
-  
-  const int age = 25; // const unchangeable at compile time. Use if you know what it is.
-  // const const_error = dart_1.name(); throws "Methods can't be invoked in constant"
-  
-  int? points; // ? will allow the variable to be null until an integer is assigned to it.
+  print("\n/// Lists & Sets ///"); 
+  var objectList = [50, 70, 70, "string"]; // AKA List<Object> objectList. Can add types that match these later.
+  lists_and_sets.addAndRemove(list: objectList);
 
-  // print("name: $name; age: $age; nullable points: $points");
+  var objectSet = {50, 70, "string"};  // Sets don't allow duplicate values. Anything "added" won't be stored.
+  lists_and_sets.addAndRemove(set: objectSet);
 
-  //////////////////////
-  // Typing Functions //
-  //////////////////////
-  
-  // You can type the return value in the definition + the parameters. 
-  // Leaving these untyped will work too
-  String greet({String? name, required int age}) {
-    // nullable arguments are optional.
-    // Surrounding paramters with {} will make them named.
-    return "hi $name, you are $age years old";
-  }
-
-  final greeting = greet(age: 24, name: "Omar"); // Dart will expect a string. If greet wasn't typed in the def, it would expect a dynamic type instead.
-  // named parameters don't need to be in the right order. Use key: value to pass them in.
-  // print(greeting);
-
-
-  ///////////////////
-  // Lists & Sets //
-  //////////////////
-  var objectList = [50, 70, 70, "string"]; // List<Object> objectList. Can add types that match these later.
-  objectList.add(100);
-  objectList.add("money");
-  objectList.remove(70); // removes only first instance it finds.
-  
   List<String> stringList = ["one", "two"]; // Won't allow other types in.
+  lists_and_sets.addAndRemove(list: stringList);
 
-  var objectSet = {50, 70, "string"};
-  // Sets don't allow duplicate values. Anything "added" won't be stored.
-
-  //////////////////////
-  // Loops and flows //
-  /////////////////////
+  ///////////////////////////////////
+  print("\n/// Loops and flows ///");
+  ///////////////////////////////////
   var N = stringList.length;
   for (int i = 0; i < (N * 2); i++) {
-    //print(stringList[i % N]);
+    print(stringList[i % N]);
   }
   for (var e in objectSet.where((item) => item.runtimeType == int)) { 
     // iterator must match the elements here even if you filter first. Set treated as dynamic.
-    // print(e);
+    print(e);
   }
-
-  //////////
-  // Maps //
-  //////////
+  ////////////////////////
+  print("\n/// Maps ///");
+  ////////////////////////
   // Maps (dictionaries) also use {}. Use Key Value pairs inside to mean "map".
   var emptyMap = {}; // this will default to the map unless defined otherwise.
   Set<Object> emptySet = {};
@@ -75,17 +54,17 @@ void main(List<String> arguments) async {
 
   var second = numberMap[2]; // prints "two". 
   // ^ Should be nullable incase we access non-existant key to assign a new entry:
+  
   numberMap[3] = "three"; // >> {1: one, 2: two, 3: three}
   numberMap.containsKey(3); // >> true
   
   numberMap.remove(2);
   numberMap.containsKey(2); // false
 
-/////////////
-// Classes //
-/////////////
-
-// Define these outside of methods (including main)
+  ///////////////////////////
+  print("\n/// Classes ///");
+  ///////////////////////////
+  // Define these outside of methods (including main)
   var heavyCube = Cube("tungsten", 10); 
   // print(heavyCube); // >> Instance of 'Cube'. toString() is invoked under the hood. Override it if you want it changed.
   [heavyCube.material, heavyCube.length];  // >> [tungsten, 10.0]
@@ -93,13 +72,13 @@ void main(List<String> arguments) async {
   heavyCube.doSomething(); // >> hi :)
 
   var rubiksCube = CubicObject("puzzle", "plastic", 6.0);
-  rubiksCube; // >> prints output of rubiksCube.doSomething() because the 'toString()' is overriden.
+  rubiksCube; // >> returns output of rubiksCube.doSomething() because the 'toString()' is overriden.
   rubiksCube.describeCube(); // >> Material is plastic & length is 6.0
   rubiksCube.doSomething(); // >> hi I'm a cubic object of type 'puzzle' made of plastic :)
-
-  //////////////
-  // Generics //
-  //////////////
+  
+  ////////////////////////////
+  print("\n/// Generics ///");
+  ////////////////////////////
   var die = CubicObject("toy", "plastic", 1.5);
   var cubes = GenericCollection<CubicObject>(
     "A collection of CubicObjects", 
@@ -129,12 +108,12 @@ void main(List<String> arguments) async {
   // // This runs in the background and immediately moves on to the next line. 
   // print("line after .then"); // >> Appears before the result
 
-  // final post = await fakeFetchPost(); // await can only be used in a function that is marked 'async' so I've marked main.
+  final post = await fakeFetchPost(); // await can only be used in a function that is marked 'async' so I've marked main.
   // // without 'awaiting', 'post' will be assigned to Future<PostRequest>. We want it to be assigned to the PostRequest that is returned from the Future (or promise).
   // // so, we wait before assigning.
   // // This one isn't happening in the background. Whole program will wait here.
-  // print(["await result:", post.title, post.userId]);
-  // print("Line after await"); // >> appears after the result.
+  print(["await result:", post.title, post.userId]);
+  print("Line after await"); // >> appears after the result.
   // /// IMPORTANT: If you want await to actually be asynchronous, just define it in its own async function. Try to avoid using .then but it's there if you need
   
   ///////////////////////////////////////
@@ -165,7 +144,7 @@ void main(List<String> arguments) async {
   }
   
   PostRequest response = await fetchPost();
-  // print(["title: ${response.title}", "userId: ${response.userId}"]);
+  print(["title: ${response.title}", "userId: ${response.userId}"]);
 }
 
 
